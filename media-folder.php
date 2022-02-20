@@ -20,7 +20,7 @@ if(!class_exists('MediaFolder')) :
 		{
 			register_activation_hook(__FILE__, [$this, 'activate']);
 			register_deactivation_hook(__FILE__, [$this, 'deactivate']);
-			register_uninstall_hook(__FILE__, [MediaFoldel::class, 'uninstall']);
+			register_uninstall_hook(__FILE__, [MediaFolder::class, 'uninstall']);
 
 			add_filter('manage_media_columns', [$this, 'filter_manage_media_columns'], 10, 2);
 			add_action('manage_media_custom_column', [$this, 'action_manage_media_custom_column'], 10, 2);
