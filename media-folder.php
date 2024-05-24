@@ -178,41 +178,41 @@ if(!class_exists('MediaFolder')) :
 <script>
 (function($) {
 	$(window).load(function() {
-		var mediaFoldersFilter = wp.media.view.AttachmentFilters.extend({
-			id: 'media-folders-filter',
+		if (wp && wp.media && wp.media.view) {
+			var mediaFoldersFilter = wp.media.view.AttachmentFilters.extend({
+				id: 'media-folders-filter',
 
-			createFilters: function() {
-				var filters = {};
-
-				<?php foreach ($tree as $t) { ?>
-				filters.<?= $t === '/' ? 'all' : uniqid('folder') ?> = {
-					text:  '<?= $t ?>',
-					props: {
-						status:  null,
-						type:    'image',
-						uploadedTo: '',
-						folder: '<?= $t ?>',
-						orderby: 'date',
-						order:   'DESC'
-					},
-					priority: 10
-				};
-				<?php } ?>
-				this.filters = filters;
-			}
-		});
-
-		var AttachmentsBrowser = wp.media.view.AttachmentsBrowser;
-		wp.media.view.AttachmentsBrowser = wp.media.view.AttachmentsBrowser.extend({
-			createToolbar: function() {
-				AttachmentsBrowser.prototype.createToolbar.call( this );
-				this.toolbar.set('mediaFoldersFilter', new mediaFoldersFilter({
-					controller: this.controller,
-					model:      this.collection.props,
-					priority:   -100
-				}).render());
-			}
-		});
+				createFilters: function() {
+					var filters = {};
+					<?php foreach ($tree as $t) { ?>
+					filters.<?= $t === '/' ? 'all' : uniqid('folder') ?> = {
+						text:  '<?= $t ?>',
+						props: {
+							status:  null,
+							type:    'image',
+							uploadedTo: '',
+							folder: '<?= $t ?>',
+							orderby: 'date',
+							order:   'DESC'
+						},
+						priority: 10
+					};
+					<?php } ?>
+					this.filters = filters;
+				}
+			});
+			var _AttachmentsBrowser = wp.media.view.AttachmentsBrowser;
+			wp.media.view.AttachmentsBrowser = wp.media.view.AttachmentsBrowser.extend({
+				createToolbar: function() {
+					_AttachmentsBrowser.prototype.createToolbar.call(this);
+					this.toolbar.set('mediaFoldersFilter', new mediaFoldersFilter({
+						controller: this.controller,
+						model:      this.collection.props,
+						priority:   -100
+					}).render());
+				}
+			});
+		}
 	});
 })(jQuery);
 </script>
